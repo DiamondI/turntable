@@ -1,4 +1,5 @@
 import pygame
+from pygame.locals import *
 import sys
 from draw_pie_chart import draw_pie_chart
 import math
@@ -26,7 +27,7 @@ angle = 0
 center_x, center_y = 320, 240
 radius = 100
 
-angles = random.randint(720, 1080)
+angles = random.randint(1800, 2160)
 
 velocity = 100
 level_num = 5
@@ -34,10 +35,14 @@ velocity_step = velocity / level_num
 interval = angles / level_num
 
 
+start = False
 while True:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             sys.exit()
+        if event.type == pygame.KEYDOWN:
+            if event.key == K_SPACE:
+                start = True
 
     posx = center_x + int(radius * math.sin(angle * math.pi / 180))
     posy = center_y - int(radius * math.cos(angle * math.pi / 180))
@@ -46,12 +51,18 @@ while True:
     screen.blit(bg, (0, 0))
     new_pointer = pygame.transform.rotate(pointer, -angle)
     newRect = new_pointer.get_rect(center = (posx, posy))
+
+    if start:
+        if angle <= angles:
+            angle += velocity - velocity_step * (angle // interval)
+        else:
+            # 一轮转盘结束，重置 angle, angles, start
+            angle = angle % 360
+            angles = random.randint(1800, 2160)
+            interval = angles / level_num
+            start = False
     
-    if angle <= angles:
-        angle += velocity - velocity_step * (angle // interval)
     screen.blit(new_pointer, newRect)
  
-    # newRect = pointer.get_rect(center=(300,150))
-    # pygame.draw.circle(screen,(255,255,0),(320,240),30)
     tick.tick(fps)
     pygame.display.flip()  # 刷新窗口
