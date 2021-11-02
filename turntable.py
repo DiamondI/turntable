@@ -17,8 +17,9 @@ draw_pie_chart()
 bg_picture = pygame.transform.scale(pygame.image.load("images/pie.png"), (640, 480))
 bg = bg_picture.convert()
 
-pointer_picture = pygame.transform.scale(pygame.image.load("images/pointer.svg"), (100, 230))
-pointer = pointer_picture.convert_alpha()
+# pointer_picture = pygame.transform.scale(pygame.image.load("images/pointer.png"), (24, 87))
+# pointer = pointer_picture.convert()
+pointer = pygame.image.load("images/pointer.png")
 
 angle = 0
 
